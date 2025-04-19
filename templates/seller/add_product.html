@@ -1,0 +1,98 @@
+{% extends "seller/base.html" %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Add New Product</h1>
+    <a href="{{ url_for('seller_products') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i> Back to Products
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price (₹)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="stock" class="form-label">Stock Quantity</label>
+                                <input type="number" class="form-control" id="stock" name="stock" min="0" value="10" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Fashion">Fashion</option>
+                            <option value="Home & Kitchen">Home & Kitchen</option>
+                            <option value="Beauty & Personal Care">Beauty & Personal Care</option>
+                            <option value="Books">Books</option>
+                            <option value="Groceries">Groceries</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Product Image</label>
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <img src="https://via.placeholder.com/150?text=Product+Image" id="imagePreview" class="img-fluid mb-3" alt="Product image preview">
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                                <small class="text-muted d-block mt-2">Upload a JPG or PNG image. Max size: 2MB.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image_url" class="form-label">OR Image URL</label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
+                        <small class="text-muted">You can provide a URL instead of uploading an image.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i> Add Product
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Preview uploaded image
+    document.getElementById('image').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('imagePreview').src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %} 

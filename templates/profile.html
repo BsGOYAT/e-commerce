@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <i class="bi bi-person-circle" style="font-size: 5rem;"></i>
+                    <h4 class="mt-3">{{ current_user.username }}</h4>
+                    <p class="text-muted">{{ current_user.email }}</p>
+                </div>
+            </div>
+            
+            <div class="list-group mb-4">
+                <a href="{{ url_for('profile') }}" class="list-group-item list-group-item-action active">
+                    <i class="bi bi-person me-2"></i>Profile Information
+                </a>
+                <a href="{{ url_for('orders') }}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-box me-2"></i>My Orders
+                </a>
+                <a href="{{ url_for('cart') }}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-cart3 me-2"></i>Shopping Cart
+                </a>
+                <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action text-danger">
+                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Profile Information</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" value="{{ current_user.username }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" value="{{ current_user.email }}" readonly>
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>Profile editing is not available in this version.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card welcome-banner">
+            <div class="card-body text-center p-5 welcome-content">
+                <h1 class="display-4 fw-bold text-white">Welcome to <span class="text-warning">Aapki Apni Dukan</span></h1>
+                <p class="lead text-white fw-bold mb-4">Discover Amazing Products at Unbeatable Prices!</p>
+                <a href="#featured-products" class="btn btn-warning btn-lg px-4 fw-bold">Shop Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Amazon-like product grid -->
+<div class="row" id="featured-products">
+    <div class="col-12 mb-3">
+        <h2 class="border-bottom pb-2">Top Deals For You</h2>
+    </div>
+</div>
+
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-3 mb-4">
+        <div class="card product-card h-100">
+            <div class="position-relative">
+                <img src="{{ product.image_url or 'https://via.placeholder.com/300' }}" class="card-img-top" alt="{{ product.name }}">
+                {% if loop.first %}
+                <span class="badge bg-danger position-absolute top-0 end-0 m-2">Best Seller</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                
+                <div class="d-flex text-warning small mb-2">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                    <span class="text-muted ms-1">(425)</span>
+                </div>
+                
+                <div class="mb-2">
+                    <span class="text-danger">-67%</span>
+                    <span class="fw-bold fs-5">₹{{ "%.2f"|format(product.price) }}</span>
+                </div>
+                
+                <p class="card-text small text-muted">{{ product.description | truncate(100) }}</p>
+                
+                <div class="mb-2 small">
+                    <i class="bi bi-lightning-fill text-primary"></i>
+                    <span class="text-success">Free delivery</span>
+                </div>
+                
+                <div class="d-grid gap-2 mt-3">
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-outline-primary btn-sm">View Details</a>
+                    <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST">
+                        <button type="submit" class="btn btn-warning btn-sm w-100">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Categories section -->
+<div class="row mt-5">
+    <div class="col-12 mb-3">
+        <h2 class="border-bottom pb-2">Shop by Category</h2>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-laptop" style="font-size: 3rem;"></i>
+                <h5 class="mt-3">Electronics</h5>
+                <p class="small text-muted">Smartphones, Laptops, Headphones & more</p>
+                <a href="#" class="btn btn-outline-primary btn-sm mt-2">Explore</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-cart3" style="font-size: 3rem;"></i>
+                <h5 class="mt-3">Groceries</h5>
+                <p class="small text-muted">Fresh produce, snacks, beverages & more</p>
+                <a href="#" class="btn btn-outline-primary btn-sm mt-2">Explore</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-book" style="font-size: 3rem;"></i>
+                <h5 class="mt-3">Books</h5>
+                <p class="small text-muted">Fiction, non-fiction, textbooks & more</p>
+                <a href="#" class="btn btn-outline-primary btn-sm mt-2">Explore</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-house" style="font-size: 3rem;"></i>
+                <h5 class="mt-3">Home & Kitchen</h5>
+                <p class="small text-muted">Appliances, furniture, decor & more</p>
+                <a href="#" class="btn btn-outline-primary btn-sm mt-2">Explore</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

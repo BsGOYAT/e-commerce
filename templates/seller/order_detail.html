@@ -1,0 +1,105 @@
+{% extends "seller/base.html" %}
+
+{% block title %}Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Order #{{ order.id }}</h1>
+    <a href="{{ url_for('seller_orders') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i> Back to Orders
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Order Details</h5>
+                <span class="badge bg-success">{{ order.status }}</span>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="mb-2">Order Date</h6>
+                        <p>{{ order.created_at.strftime('%B %d, %Y') }}</p>
+                        
+                        <h6 class="mb-2">Payment Method</h6>
+                        <p>{{ order.payment_method | title }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-2">Customer Email</h6>
+                        <p>{{ order.email }}</p>
+                    </div>
+                </div>
+                
+                <h6 class="mb-3">Your Products in This Order</h6>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-end">Price</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in seller_items %}
+                            <tr>
+                                <td>{{ item.product_name }}</td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td class="text-end">₹{{ "%.2f"|format(item.price) }}</td>
+                                <td class="text-end">₹{{ "%.2f"|format(item.price * item.quantity) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Subtotal:</strong></td>
+                                <td class="text-end">₹{{ "%.2f"|format(seller_items|sum(attribute='price') * seller_items|sum(attribute='quantity')) }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Shipping Address</h5>
+            </div>
+            <div class="card-body">
+                <address>
+                    <strong>{{ order.shipping_address.name }}</strong><br>
+                    {{ order.shipping_address.address }}<br>
+                    {{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.pincode }}<br>
+                    <abbr title="Phone">P:</abbr> {{ order.shipping_address.phone }}
+                </address>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Update Order Status</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="Placed" {% if order.status == 'Placed' %}selected{% endif %}>Placed</option>
+                            <option value="Processing" {% if order.status == 'Processing' %}selected{% endif %}>Processing</option>
+                            <option value="Shipped" {% if order.status == 'Shipped' %}selected{% endif %}>Shipped</option>
+                            <option value="Delivered" {% if order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                            <option value="Cancelled" {% if order.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Update Status</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

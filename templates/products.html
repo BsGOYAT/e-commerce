@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}All Products{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">All Products</h1>
+    
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-3 mb-4">
+            <div class="card product-card h-100">
+                <div class="position-relative">
+                    <img src="{{ product.image_url or 'https://via.placeholder.com/300' }}" class="card-img-top" alt="{{ product.name }}">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    
+                    <div class="d-flex text-warning small mb-2">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-half"></i>
+                        <span class="text-muted ms-1">(425)</span>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <span class="text-danger">-67%</span>
+                        <span class="fw-bold fs-5">₹{{ "%.2f"|format(product.price) }}</span>
+                    </div>
+                    
+                    <p class="card-text small text-muted">{{ product.description | truncate(100) }}</p>
+                    
+                    <div class="mb-2 small">
+                        <i class="bi bi-lightning-fill text-primary"></i>
+                        <span class="text-success">Free delivery</span>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-3">
+                        <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-outline-primary btn-sm">View Details</a>
+                        <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST">
+                            <button type="submit" class="btn btn-warning btn-sm w-100">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 
